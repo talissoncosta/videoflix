@@ -1,8 +1,10 @@
 const fs = require('fs');
 const express = require('express');
 const app = express();
+app.use(express.static(__dirname + '/public'));
+
 app.get('/', (req, res) => {
-    fs.readFile('./index.html', (err, html) => res.end(html));
+    fs.readFile('./public/index.html', (err, html) => res.end(html));
 });
 app.get('/movies/:movieName', (req, res) => {
     const { movieName } = req.params;
@@ -34,4 +36,6 @@ app.get('/movies/:movieName', (req, res) => {
         stream.on('error', (streamErr) => res.end(streamErr));
     });
 });
-app.listen(3001, () => console.log('VideoFlix Server!'));
+var port = process.env.PORT || 5001;
+
+app.listen(port, () => { console.log('VideoFlix Server started! Port: ' + port) });
